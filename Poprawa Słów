@@ -1,0 +1,33 @@
+import re
+
+wynik = []
+
+with open("source.txt","r") as file_s:
+    lines_source = file_s.readlines()
+
+with open("slownik.txt","r") as file_d:
+    lines_dic = file_d.readlines()
+
+for x in lines_source:
+
+    for n in lines_dic:
+        var_a = n.split(sep=';')
+        x = re.sub(var_a[0],var_a[1][0:-1],x)
+    wynik.append(x)
+i=0
+for x in lines_source:
+
+    for n in lines_dic:
+        var_a = n.split(sep=';')
+        if len(re.findall(var_a[0],x))>0:
+
+            i=i+1
+
+print("Dokonanych zmian jest :"+ str(i))
+del i
+
+f = open("wynik.txt","a")
+for m in wynik:
+    f.write(m)
+f.close()
+
