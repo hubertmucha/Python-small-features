@@ -1,0 +1,61 @@
+import multiprocessing
+import time
+import re
+
+def counting(book_number,expression):
+
+    with open('book{}.txt'.format(book_number), errors='ignore') as file_s:
+
+        lines_source = file_s.readlines()
+    i =0
+    for line in lines_source:
+        #print('book{}.txt'.format(book_number) + line)
+        i = i + len(re.findall("({})".format(expression), line))
+    print('In book number {} your expression exist '.format(book_number)+ str(i) + ' times.')
+
+
+if __name__ == '__main__':
+
+
+
+    var_count_proceses = int(input("Numbers proceses:"))
+    expression = input("Expression:")
+    start = time.perf_counter()
+
+    proceses = []
+    i = 0
+    while i < var_count_proceses:
+        proceses.append('p{}'.format(i + 1))
+        i = i + 1
+
+    if var_count_proceses == 20:
+
+        i = 0
+
+        while i < var_count_proceses:
+            proceses[i] = multiprocessing.Process(target=counting, args=[i+1,expression])
+            proceses[i].start()
+            i = i + 1
+        for p in proceses:
+            p.join()
+
+    else:
+        var_mod = 20%var_count_proceses
+        i = 0
+        j = 0
+        for n in range(0,int((20-var_mod)/var_count_proceses)):
+            while j < var_count_proceses:
+                proceses[j] = multiprocessing.Process(target=counting, args=[i + 1, expression])
+                proceses[j].start()
+                i = i + 1
+                j = j + 1
+            j=0
+            while j <var_count_proceses:
+                proceses[j].join()
+                j=j+1
+            j =0
+
+
+    finish = time.perf_counter()
+
+    print(f'Finished in {round(finish-start, 2)} second(s)')
