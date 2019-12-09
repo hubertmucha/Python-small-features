@@ -1,0 +1,110 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from tkinter import *
+from mpl_toolkits.mplot3d import Axes3D
+
+
+
+#global lists of args
+x = []
+y = []
+z = []
+time = [i for i in range(0,1000)]
+
+
+
+#to import file and save data to lists
+def fileRead():
+    with open('pomiary.txt', errors='ignore') as file_s:
+        lines_source = file_s.readlines()
+
+
+    i = 1
+    while len(lines_source) > i:
+        x.append(float(lines_source[i].split(sep="', ")[1][0:-2]))
+        i = i + 4
+    i = 2
+    while len(lines_source) > i:
+        y.append(float(lines_source[i].split(sep="', ")[1][0:-2]))
+        i = i + 4
+    i = 3
+    while len(lines_source) > i:
+        z.append(float(lines_source[i].split(sep="', ")[1][0:-2]))
+        i = i + 4
+
+def minInList(list):
+    min = list[0]
+    for number in list:
+
+        if number < min:
+            min = number
+
+    return min
+
+def maxInList(list):
+    max = list[0]
+    for number in list:
+
+        if number > max:
+            max = number
+
+    return max
+
+def drawPlot(event,x,time):
+    
+    plt.close()
+    plt.plot(time,x)
+    plt.xlabel('Przemieszczenie')
+    plt.ylabel('Czas')
+    plt.title("Pomiary")
+    plt.show()
+
+def drawPlotAdd(event,x,y,z,time):
+
+    plt.close()
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+
+    ax.plot(x, y, z, label='Przemieszenie w czasie')
+    ax.legend()
+
+    plt.show()
+
+master = Tk()
+master.title("Rysowanie Wykresów")
+
+
+b_a = Button(master, text="      X       ",)
+b_a.grid(row=0, column=0)
+
+b_b = Button(master, text="      Y       ",)
+b_b.grid(row=0, column=1)
+
+b_c = Button(master, text="      Z       ",)
+b_c.grid(row=0, column=2)
+
+b_d = Button(master, text="      BONUS       ",)
+b_d.grid(row=0, column=3)
+
+b_a.bind('<Button-1>', lambda e:drawPlot(e,x,time))
+b_b.bind('<Button-1>', lambda e:drawPlot(e,y,time))
+b_c.bind('<Button-1>', lambda e:drawPlot(e,z,time))
+b_d.bind('<Button-1>', lambda e:drawPlotAdd(e,x,y,z,time))
+
+fileRead()
+
+
+master.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
