@@ -1,0 +1,46 @@
+
+sLongestGirlName = ""
+sLongestBoyName = ""
+
+fileBoys = open('boys.txt','a')
+fileGirls = open('girls.txt','a')
+
+def appToCorrectFile(bFlag,sName):
+
+    global sLongestGirlName
+    global sLongestBoyName
+    iLocalNameLenght = len(sName)
+
+    if bFlag == 0:
+
+
+        if iLocalNameLenght > len(sLongestBoyName):
+            sLongestBoyName = sName
+
+        fileBoys.writelines("{} {} \n".format(sName,iLocalNameLenght))
+
+    elif bFlag == 1:
+
+        if iLocalNameLenght > len(sLongestGirlName):
+            sLongestGirlName = sName
+
+        fileGirls.writelines("{} {} \n".format(sName,iLocalNameLenght))
+
+def namesSegregation():
+
+    with open("names.txt", errors='ignore') as namesFile:
+        linesSource = namesFile.readlines()
+
+        for sLine in linesSource:
+
+            if sLine[-2] == 'a':
+                appToCorrectFile(1,sLine[0:-1])
+            else:
+                appToCorrectFile(0,sLine[0:-1])
+def appLongestToFile():
+
+    fileBoys.writelines("\n{} {} \n".format(sLongestBoyName, len(sLongestBoyName)))
+    fileGirls.writelines("\n{} {} \n".format(sLongestGirlName, len(sLongestGirlName)))
+
+namesSegregation()
+appLongestToFile()
