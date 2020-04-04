@@ -1,0 +1,45 @@
+#factor distribution
+
+iArrayPrimeFactors = []
+
+def isPrimeNumber(iNumber):
+    #returning TRUE when input number is Prime Number ,FALSE when isnt
+
+    if iNumber == 2:
+        return True
+    if iNumber % 2 == 0 or iNumber <= 1:
+        return False
+
+    fNumberSqrt = int(iNumber**0.5) + 1
+    for iDivider in range(3, fNumberSqrt, 2):
+        if iNumber % iDivider == 0:
+            return False
+    return True
+
+
+def factorDistibution(iNumber,iArrayPrimeFactors):
+
+    iPrimeDividor = 2
+
+    if isPrimeNumber(iNumber):
+        return iNumber
+
+    while(iNumber != 1):
+        
+        if isPrimeNumber(iPrimeDividor):
+            if iNumber % iPrimeDividor == 0:
+                iNumber = iNumber/iPrimeDividor
+                iArrayPrimeFactors.append(iPrimeDividor)
+            else:
+                iPrimeDividor = iPrimeDividor + 1
+                continue
+        else:
+            iPrimeDividor = iPrimeDividor + 1
+            continue
+    return iArrayPrimeFactors
+
+iInputNumber = int(input())
+
+
+for char in factorDistibution(iInputNumber,iArrayPrimeFactors):
+    print(char,end=' ')
