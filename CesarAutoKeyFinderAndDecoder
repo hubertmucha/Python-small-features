@@ -1,0 +1,67 @@
+from collections import Counter
+import collections
+
+
+def linePurified(sLine):
+    return "".join(sLine.split()).lower()
+
+
+def mostCommonCharInText(sFileName):
+
+    charCounterCol = collections.Counter('')
+
+    with open("{}".format(sFileName), errors='ignore') as dataFiles:
+
+        linesSource = dataFiles.readlines()
+
+        for sLine in linesSource:
+            charCounterCol = charCounterCol + Counter(linePurified(sLine))
+
+    print(charCounterCol.most_common(4))
+    charCounterCol = charCounterCol.most_common(1)
+    charCounterCol = charCounterCol[0]
+    charCounterCol = charCounterCol[0]
+    return charCounterCol
+
+def charCesarConversion(iKey,cCharToMove):
+
+    cResult = ''
+
+    if ord(cCharToMove) == 32:
+        return chr(ord(cCharToMove))
+    if ord(cCharToMove) >122 or ord(cCharToMove) <97:
+        return cCharToMove
+    else:
+        cResult = chr((ord(cCharToMove) + iKey - 97) % 26 + 97)
+        return cResult
+
+def cesarConversionFTF(sDataFileName,sResulFileName,iKey):
+
+    fileResult = open('{}'.format(sResulFileName),'a')
+
+    with open("{}".format(sDataFileName), errors='ignore') as dataFiles:
+        linesSource = dataFiles.readlines()
+
+        for sLine in linesSource:
+            for cChar in sLine[0:-1]:
+                fileResult.writelines("{}".format(charCesarConversion(iKey,cChar)))
+            fileResult.writelines("\n")
+
+    fileResult.close()
+    print("Conversion from file {} to file {} by key {} completed".format(sDataFileName,sResulFileName,iKey))
+
+def keyCesarFinder(mostCommonChar):
+
+    iKey = ord(mostCommonChar) - 97
+    return iKey
+
+cesarConversionFTF("dane.txt","wyniki.txt",1)
+
+print(mostCommonCharInText("dane.txt"))
+print(mostCommonCharInText("wyniki.txt"))
+print(keyCesarFinder(mostCommonCharInText("wyniki.txt")))
+
+iKey = keyCesarFinder(mostCommonCharInText("wyniki.txt"))
+
+cesarConversionFTF("wyniki.txt","wynikpo.txt",26-iKey)
+
