@@ -1,0 +1,36 @@
+#Caesar's cipher file to file 
+
+def charCesarConversion(iKey,cCharToMove):
+
+    cResult = ''
+
+    if ord(cCharToMove) == 32:
+        return chr(ord(cCharToMove))
+    else:
+        cResult = chr((ord(cCharToMove) + iKey - 97) % 26 + 97)
+        return cResult
+
+def cesarConversionFTF(sDataFileName,sResulFileName,iKey):
+
+    fileResult = open('{}'.format(sResulFileName),'a')
+
+    with open("{}".format(sDataFileName), errors='ignore') as dataFiles:
+        linesSource = dataFiles.readlines()
+
+        for sLine in linesSource:
+            for cChar in sLine[0:-1]:
+                fileResult.writelines("{}".format(charCesarConversion(iKey,cChar)))
+            fileResult.writelines("\n")
+
+    fileResult.close()
+    print("Conversion from file {} to file {} by key {} completed".format(sDataFileName,sResulFileName,iKey))
+try:
+    iInputKey = int(input('Enter your (INTIGER) key:'))
+    cesarConversionFTF("dane.txt","wyniki.txt", iInputKey)
+except ValueError:
+  print("Wrong input type, must be INTIGER greater then 0")
+
+
+
+
+
